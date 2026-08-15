@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+venv/
+env/
+.env
+*.sqlite3
+*.log
+*.pid
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+/media/
+/static/
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build
+/build/
+dist/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Backup
+*.bak
+*.tmp
+
+# Visual Studio
+.vs/
+*.vsidx
+*.user
+*.suo
+*.sln
+*.csproj
+
+# Outros
+.env.cosmeticos.txt
