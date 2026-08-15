@@ -1,18 +1,17 @@
 # INUKA - Plataforma de Revenda de Cosméticos
 
-## Descrição
-Plataforma completa para revendedores de cosméticos.
+Plataforma completa para revendedores de cosméticos INUKA.
 
 ## Tecnologias
-- Backend: Python + Django
+- Backend: Django
 - Frontend: React
-- Base de Dados: PostgreSQL
+- Database: PostgreSQL
 
-## Como executar
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+## Funcionalidades
+- Registo de revendedores com código único
+- Depósitos via M-Pesa, E-Mola, mKash, Visa
+- Conversão de moedas
+- Carrinho de compras
+- Checkout com validação de saldo
+- Rastreio de pedidos
+- Levantamento em lojas físicas
