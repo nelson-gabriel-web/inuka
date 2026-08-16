@@ -1,18 +1,19 @@
 import os
 from pathlib import Path
-
-import os
 from dotenv import load_dotenv
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-xyz123abc456'
+# Carregar variáveis do .env
+load_dotenv()
 
-DEBUG = True
+# Segurança
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-xyz123abc456')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
-ALLOWED_HOSTS = []
-
+# Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,7 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # CORS - DEVE ESTAR AQUI!
+    # CORS
     'corsheaders',
     
     # Apps do INUKA
@@ -33,12 +34,11 @@ INSTALLED_APPS = [
     'anuncios',
 ]
 
+# Middleware - CORRETO E SEM DUPLICADOS
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # ← Deve estar no TOPO!
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ← ADICIONAR (deve estar abaixo do SecurityMiddleware)
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # ← Deve ser o PRIMEIRO
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ← WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,8 +67,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inuka.wsgi.application'
 
-# Carregar variáveis do .env
-load_dotenv()
+# Base de dados
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
@@ -77,6 +76,7 @@ DATABASES = {
     )
 }
 
+# Validação de passwords
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -84,27 +84,28 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# Internacionalização
 LANGUAGE_CODE = 'pt-pt'
 TIME_ZONE = 'Africa/Maputo'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Ficheiros estáticos
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ← ADICIONAR ESTA LINHA
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://inuka.onrender.com",
 ]
-
-CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -127,14 +128,11 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# Configuração de Email (Gmail)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seuemail@gmail.com'  # ← Seu email
-EMAIL_HOST_PASSWORD = 'senha_app'       # ← Senha de app do Gmail
-DEFAULT_FROM_EMAIL = 'seuemail@gmail.com'
-
-# WhiteNoise para ficheiros estáticos
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Email (opcional - pode comentar se não estiver a usar)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+# DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', '')
