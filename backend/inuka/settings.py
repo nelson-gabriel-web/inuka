@@ -11,7 +11,7 @@ load_dotenv()
 # Segurança
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-xyz123abc456')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'inuka-6576.onrender.com', '.onrender.com']
 
 # Apps
 INSTALLED_APPS = [
