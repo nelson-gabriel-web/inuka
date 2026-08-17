@@ -58,7 +58,6 @@ def categorias_produtos(request):
     """View para listar categorias disponíveis (sem repetições)"""
     categorias = Produto.objects.filter(is_active=True).values_list('categoria', flat=True).distinct()
     categorias = [c for c in categorias if c]  # Remover None/empty
-    
     return JsonResponse({
         'categorias': categorias
     })
