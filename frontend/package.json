@@ -43,7 +43,7 @@
     ]
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.4",
