@@ -20,7 +20,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          <div className="min-h-screen bg-gray-50">
+          <div className="min-h-screen bg-black">
             <Header />
             <main className="pt-16">
               <Routes>
