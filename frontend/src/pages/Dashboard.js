@@ -222,6 +222,13 @@ const Dashboard = () => {
     }}
   />
 </div>
+
+<button 
+  onClick={() => window.open(`https://inuka-6576.onrender.com/api/encomendas/exportar-csv/${revendedor.id}/`)}
+  className="border border-white/10 text-white/70 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium hover:border-[#c9a84c]/50 transition"
+>
+  📊 Exportar CSV
+</button>
                       {getStatusLabel(encomenda.status)}
                     </p>
                   </div>

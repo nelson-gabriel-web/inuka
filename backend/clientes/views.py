@@ -101,3 +101,16 @@ def atualizar_cliente(request, cliente_id):
         })
     except Exception as e:
         return JsonResponse({'erro': str(e)}, status=400)
+
+from rest_framework import viewsets
+from .serializers import ClienteSerializer
+from .models import Cliente
+
+class ClienteViewSet(viewsets.ModelViewSet):
+    serializer_class = ClienteSerializer
+    
+    def get_queryset(self):
+        revendedor_id = self.request.query_params.get('revendedor_id')
+        if revendedor_id:
+            return Cliente.objects.filter(revendedor_id=revendedor_id, is_active=True)
+        return Cliente.objects.filter(is_active=True)

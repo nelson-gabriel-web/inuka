@@ -6,4 +6,5 @@ urlpatterns = [
     path('criar/', views.criar_encomenda, name='criar'),
     path('<int:encomenda_id>/', views.detalhes_encomenda, name='detalhes'),
     path('<int:encomenda_id>/status/', views.atualizar_status_encomenda, name='status'),
+    path('exportar-csv/<int:revendedor_id>/', views.exportar_csv, name='exportar_csv'),
 ]

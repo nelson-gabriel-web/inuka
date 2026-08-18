@@ -10,8 +10,11 @@ from decimal import Decimal
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
-from django.http import HttpResponse
 from io import BytesIO
+import csv
+from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 @csrf_exempt
@@ -46,6 +49,32 @@ def listar_encomendas(request, revendedor_id):
         return JsonResponse({'encomendas': dados, 'total': len(dados)})
     except Revendedor.DoesNotExist:
         return JsonResponse({'erro': 'Revendedor não encontrado'}, status=404)
+
+def exportar_csv(request, revendedor_id):
+    """Exporta encomendas para CSV"""
+    try:
+        revendedor = Revendedor.objects.get(id=revendedor_id, is_active=True)
+        encomendas = Encomenda.objects.filter(revendedor=revendedor).order_by('-data_criacao')
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="encomendas.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['ID', 'Cliente', 'Data', 'Valor Total', 'Comissão', 'Status'])
+        
+        for e in encomendas:
+            writer.writerow([
+                e.id,
+                e.cliente.nome,
+                e.data_criacao.strftime('%d/%m/%Y'),
+                float(e.valor_total),
+                float(e.comissao_total),
+                e.status
+            ])
+        
+        return response
+    except Exception as e:
+        return JsonResponse({'erro': str(e)}, status=400)
 
 @csrf_exempt
 def criar_encomenda(request):
@@ -118,6 +147,43 @@ def detalhes_encomenda(request, encomenda_id):
             for item in encomenda.itens.all()
         ]
     })
+
+def enviar_fatura_email(request, encomenda_id):
+    """Envia fatura por email para o cliente"""
+    try:
+        encomenda = Encomenda.objects.get(id=encomenda_id)
+        
+        # Construir mensagem
+        subject = f"INUKA - Fatura #{encomenda.id}"
+        message = f"""
+        Olá {encomenda.cliente.nome},
+        
+        Segue a fatura da sua encomenda #{encomenda.id}:
+        
+        Data: {encomenda.data_criacao.strftime('%d/%m/%Y')}
+        Valor Total: R$ {float(encomenda.valor_total):.2f}
+        Status: {encomenda.status}
+        
+        Itens:
+        """
+        
+        for item in encomenda.itens.all():
+            message += f"\n- {item.produto.nome} x {item.quantidade} = R$ {float(item.subtotal):.2f}"
+        
+        message += f"\n\nComissão do Revendedor: R$ {float(encomenda.comissao_total):.2f}"
+        message += "\n\nObrigado por escolher a INUKA!"
+        
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [encomenda.cliente.email],
+            fail_silently=False,
+        )
+        
+        return JsonResponse({'sucesso': True, 'mensagem': 'Fatura enviada por email!'})
+    except Exception as e:
+        return JsonResponse({'erro': str(e)}, status=400)
 
 @csrf_exempt
 def atualizar_status_encomenda(request, encomenda_id):
