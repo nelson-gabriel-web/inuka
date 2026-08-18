@@ -236,3 +236,9 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+<button 
+  onClick={() => window.open(`https://inuka-6576.onrender.com/api/encomendas/relatorio/${revendedor.id}/`)}
+  className="bg-[#c9a84c] text-black text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium hover:bg-[#d4a017] transition"
+>
+  📄 Exportar Relatório
+</button>
