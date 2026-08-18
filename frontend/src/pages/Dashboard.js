@@ -130,34 +130,39 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Botões */}
+        {/* Botões de Ação - SEM EMOJIS */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
           <button 
             onClick={() => setShowDeposito(!showDeposito)}
             className="w-full sm:w-auto bg-[#c9a84c] text-black text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:bg-[#d4a017] transition shadow-lg shadow-[#c9a84c]/20"
           >
-            💰 Depositar
+            Depositar
           </button>
           <button 
             onClick={() => setShowConversao(!showConversao)}
             className="w-full sm:w-auto border border-[#c9a84c]/50 text-[#c9a84c] text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:bg-[#c9a84c]/10 transition"
           >
-            🔄 Converter
+            Converter
           </button>
           <button 
             onClick={() => navigate('/products')}
             className="w-full sm:w-auto bg-white/5 border border-white/10 text-white/70 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:border-[#c9a84c]/50 transition"
           >
-            🛒 Comprar
+            Comprar
           </button>
         </div>
 
-        {/* Depósito */}
+        {/* Modal Depósito */}
         {showDeposito && (
           <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-medium text-white">💰 Depositar</h3>
-              <button onClick={() => setShowDeposito(false)} className="text-white/30 hover:text-white text-sm">✕</button>
+              <h3 className="text-sm font-medium text-white">Depositar</h3>
+              <button 
+                onClick={() => setShowDeposito(false)}
+                className="text-white/30 hover:text-white text-sm"
+              >
+                ×
+              </button>
             </div>
             <form onSubmit={handleDeposito} className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <div>
@@ -188,26 +193,36 @@ const Dashboard = () => {
               <div className="sm:col-span-2">
                 <label className="text-[10px] sm:text-xs text-white/40 block mb-1">Valor</label>
                 <input 
-                  type="number" step="0.01"
+                  type="number" 
+                  step="0.01"
                   value={depositoData.valor}
                   onChange={(e) => setDepositoData({...depositoData, valor: e.target.value})}
                   className="w-full bg-black border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#c9a84c]/50"
-                  placeholder="0.00" required
+                  placeholder="0.00"
+                  required
                 />
               </div>
-              <button type="submit" className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition">
+              <button 
+                type="submit"
+                className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition"
+              >
                 Confirmar Depósito
               </button>
             </form>
           </div>
         )}
 
-        {/* Conversão */}
+        {/* Modal Conversão */}
         {showConversao && (
           <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-medium text-white">🔄 Converter</h3>
-              <button onClick={() => setShowConversao(false)} className="text-white/30 hover:text-white text-sm">✕</button>
+              <h3 className="text-sm font-medium text-white">Converter Moeda</h3>
+              <button 
+                onClick={() => setShowConversao(false)}
+                className="text-white/30 hover:text-white text-sm"
+              >
+                ×
+              </button>
             </div>
             <form onSubmit={handleConversao} className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <div>
@@ -237,14 +252,19 @@ const Dashboard = () => {
               <div className="sm:col-span-2">
                 <label className="text-[10px] sm:text-xs text-white/40 block mb-1">Valor</label>
                 <input 
-                  type="number" step="0.01"
+                  type="number" 
+                  step="0.01"
                   value={conversaoData.valor_origem}
                   onChange={(e) => setConversaoData({...conversaoData, valor_origem: e.target.value})}
                   className="w-full bg-black border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#c9a84c]/50"
-                  placeholder="0.00" required
+                  placeholder="0.00"
+                  required
                 />
               </div>
-              <button type="submit" className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition">
+              <button 
+                type="submit"
+                className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition"
+              >
                 Confirmar Conversão
               </button>
             </form>
@@ -297,14 +317,21 @@ const Dashboard = () => {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-xs sm:text-sm font-medium text-white/60">Últimos Pedidos</h2>
-            <button onClick={() => navigate('/products')} className="text-[8px] sm:text-[10px] text-[#c9a84c] hover:text-[#d4a017] transition uppercase tracking-wider">
+            <button 
+              onClick={() => navigate('/products')}
+              className="text-[8px] sm:text-[10px] text-[#c9a84c] hover:text-[#d4a017] transition uppercase tracking-wider"
+            >
               + Comprar
             </button>
           </div>
+
           {pedidos.length === 0 ? (
             <div className="bg-white/5 border border-white/5 rounded-lg p-4 sm:p-6 text-center">
               <p className="text-[10px] sm:text-xs text-white/30">Nenhum pedido realizado ainda</p>
-              <button onClick={() => navigate('/products')} className="mt-3 bg-[#c9a84c] text-black text-[10px] sm:text-xs px-3 sm:px-4 py-1.5 rounded-full hover:bg-[#d4a017] transition">
+              <button 
+                onClick={() => navigate('/products')}
+                className="mt-3 bg-[#c9a84c] text-black text-[10px] sm:text-xs px-3 sm:px-4 py-1.5 rounded-full hover:bg-[#d4a017] transition"
+              >
                 Fazer Primeiro Pedido
               </button>
             </div>
