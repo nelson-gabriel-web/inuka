@@ -52,6 +52,16 @@ const Header = () => {
   )}
 </Link>
 
+<Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+  Clientes
+</Link>
+<Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+  Encomendas
+</Link>
+<Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+  Comissões
+</Link>
+
             {isAuthenticated() ? (
               <div className="relative group">
                 <button className="p-2 hover:bg-white/5 rounded-full transition flex items-center gap-2 text-white/40 hover:text-white">
