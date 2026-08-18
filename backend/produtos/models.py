@@ -27,7 +27,7 @@ class Produto(models.Model):
     stock_atual = models.IntegerField(default=0, verbose_name="Stock Atual")
     stock_minimo = models.IntegerField(default=5, verbose_name="Stock Mínimo")
     categoria = models.CharField(max_length=100, verbose_name="Categoria", blank=True, null=True)
-    imagem_url = models.CharField(max_length=255, verbose_name="URL da Imagem", blank=True, null=True)
+    imagem_url = models.CharField(max_length=255, verbose_name="URL da Imagem", blank=True, null=True)# imagem = models.ImageField(upload_to='produtos/', blank=True, null=True, verbose_name="Imagem do Produto")
     is_active = models.BooleanField(default=True, verbose_name="Ativo")
     data_criacao = models.DateTimeField(auto_now_add=True, verbose_name="Data de Criação")
     
