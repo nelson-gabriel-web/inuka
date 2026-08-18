@@ -108,6 +108,7 @@ def registar_revendedor(request):
 
 
 @csrf_exempt
+@csrf_exempt
 def login_revendedor(request):
     """View para login do revendedor (SEM código único)"""
     if request.method == 'POST':
@@ -136,11 +137,18 @@ def login_revendedor(request):
                     'sucesso': True,
                     'revendedor': {
                         'id': revendedor.id,
-                        'nome': revendedor.nome_completo,
+                        'nome_completo': revendedor.nome_completo,
                         'email': revendedor.email,
+                        'telefone': revendedor.telefone,
                         'codigo_unico': revendedor.codigo_unico,
                         'provincia': revendedor.provincia,
-                        'loja_recolha': revendedor.loja_recolha.nome if revendedor.loja_recolha else None
+                        'cidade': revendedor.cidade,
+                        'bairro': revendedor.bairro,
+                        'loja_recolha': revendedor.loja_recolha.nome if revendedor.loja_recolha else None,
+                        'documento_tipo': revendedor.documento_tipo,
+                        'documento_numero': revendedor.documento_numero,
+                        'data_registo': revendedor.data_registo,
+                        'ultimo_login': revendedor.data_ultimo_login
                     }
                 })
                 
