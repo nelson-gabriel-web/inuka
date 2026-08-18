@@ -17,6 +17,31 @@ const Clientes = () => {
     endereco: ''
   });
 
+// Adicione este estado
+const [clienteSelecionado, setClienteSelecionado] = useState(null);
+const [historicoCliente, setHistoricoCliente] = useState([]);
+<button
+  onClick={() => verHistorico(cliente.id)}
+  className="text-[10px] text-[#c9a84c] hover:text-[#d4a017] transition"
+>
+  Histórico
+</button>
+
+// Adicione esta função
+const verHistorico = async (clienteId) => {
+  try {
+    const response = await axios.get(
+      `https://inuka-6576.onrender.com/api/encomendas/revendedor/${revendedor.id}/`
+    );
+    const encomendas = response.data.encomendas || [];
+    const historico = encomendas.filter(e => e.cliente_id === clienteId);
+    setHistoricoCliente(historico);
+    setClienteSelecionado(clienteId);
+  } catch (error) {
+    toast.error('Erro ao carregar histórico');
+  }
+};
+
   useEffect(() => {
     if (!isAuthenticated()) {
       navigate('/login');

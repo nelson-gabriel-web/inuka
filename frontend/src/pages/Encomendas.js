@@ -86,6 +86,21 @@ const Encomendas = () => {
     const itens = [...novaEncomenda.itens];
     itens[index][campo] = valor;
     setNovaEncomenda({ ...novaEncomenda, itens });
+    const atualizarItem = (index, campo, valor) => {
+  const itens = [...novaEncomenda.itens];
+  itens[index][campo] = valor;
+  
+  // Se for produto, atualizar preço automaticamente
+  if (campo === 'produto_id' && valor) {
+    const produto = produtos.find(p => p.id === parseInt(valor));
+    if (produto) {
+      itens[index].preco_unitario = produto.preco_zar;
+      itens[index].comissao_item = (produto.preco_zar * produto.comissao_percentual) / 100;
+    }
+  }
+  
+  setNovaEncomenda({ ...novaEncomenda, itens });
+};
   };
 
   const getStatusLabel = (status) => {

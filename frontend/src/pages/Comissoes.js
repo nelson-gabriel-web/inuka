@@ -11,6 +11,7 @@ const Comissoes = () => {
   const [loading, setLoading] = useState(true);
   const [totalComissoes, setTotalComissoes] = useState(0);
   const [totalPendentes, setTotalPendentes] = useState(0);
+  const [periodo, setPeriodo] = useState('todos');
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -27,12 +28,15 @@ const Comissoes = () => {
         `https://inuka-6576.onrender.com/api/encomendas/revendedor/${revendedor.id}/`
       );
       const dados = response.data.encomendas || [];
-      setEncomendas(dados);
+      
+      // Filtrar por período
+      const dadosFiltrados = filtrarPorPeriodo(dados);
+      setEncomendas(dadosFiltrados);
       
       // Calcular totais
       let total = 0;
       let pendentes = 0;
-      dados.forEach(e => {
+      dadosFiltrados.forEach(e => {
         const comissao = parseFloat(e.comissao_total || 0);
         total += comissao;
         if (e.status === 'pendente') {
@@ -46,6 +50,28 @@ const Comissoes = () => {
     }
     setLoading(false);
   };
+
+  const filtrarPorPeriodo = (encomendas) => {
+    if (periodo === 'todos') return encomendas;
+    
+    const agora = new Date();
+    const inicio = new Date();
+    
+    if (periodo === 'mes') {
+      inicio.setMonth(agora.getMonth() - 1);
+    } else if (periodo === 'semana') {
+      inicio.setDate(agora.getDate() - 7);
+    }
+    
+    return encomendas.filter(e => new Date(e.data_criacao) >= inicio);
+  };
+
+  // Atualizar quando o período mudar
+  useEffect(() => {
+    if (encomendas.length > 0) {
+      carregarDados();
+    }
+  }, [periodo]);
 
   if (loading) {
     return (
@@ -62,6 +88,34 @@ const Comissoes = () => {
         <div className="border-b border-white/5 pb-3 sm:pb-4 mb-4 sm:mb-6">
           <h1 className="text-base sm:text-lg font-medium text-white">Comissões</h1>
           <p className="text-[10px] sm:text-xs text-white/30">Resumo das suas comissões</p>
+        </div>
+
+        {/* Filtros */}
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => setPeriodo('todos')}
+            className={`text-xs px-3 py-1 rounded-full transition ${
+              periodo === 'todos' ? 'bg-[#c9a84c] text-black' : 'bg-white/5 text-white/30'
+            }`}
+          >
+            Todos
+          </button>
+          <button
+            onClick={() => setPeriodo('mes')}
+            className={`text-xs px-3 py-1 rounded-full transition ${
+              periodo === 'mes' ? 'bg-[#c9a84c] text-black' : 'bg-white/5 text-white/30'
+            }`}
+          >
+            Último Mês
+          </button>
+          <button
+            onClick={() => setPeriodo('semana')}
+            className={`text-xs px-3 py-1 rounded-full transition ${
+              periodo === 'semana' ? 'bg-[#c9a84c] text-black' : 'bg-white/5 text-white/30'
+            }`}
+          >
+            Última Semana
+          </button>
         </div>
 
         {/* Resumo */}

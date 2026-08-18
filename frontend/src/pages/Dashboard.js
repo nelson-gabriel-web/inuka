@@ -1,3 +1,4 @@
+import { Chart } from 'react-google-charts';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -188,6 +189,39 @@ const Dashboard = () => {
                   <div className="text-right flex-shrink-0 ml-2">
                     <p className="text-xs sm:text-sm font-bold text-white">R$ {parseFloat(encomenda.valor_total).toFixed(2)}</p>
                     <p className={`text-[8px] sm:text-[10px] ${getStatusColor(encomenda.status)}`}>
+
+<div className="bg-white/5 border border-white/5 rounded-lg p-4 mb-4">
+  <h3 className="text-xs font-medium text-white/60 mb-3">Encomendas por Mês</h3>
+  <Chart
+    width={'100%'}
+    height={'150px'}
+    chartType="BarChart"
+    loader={<div className="text-white/30 text-center py-4">A carregar gráfico...</div>}
+    data={[
+      ['Mês', 'Encomendas'],
+      ['Jan', 0],
+      ['Fev', 0],
+      ['Mar', 0],
+      ['Abr', 0],
+      ['Mai', 0],
+      ['Jun', 0],
+      ['Jul', 0],
+      ['Ago', 5],
+      ['Set', 0],
+      ['Out', 0],
+      ['Nov', 0],
+      ['Dez', 0],
+    ]}
+    options={{
+      backgroundColor: 'transparent',
+      legend: { position: 'none' },
+      hAxis: { textStyle: { color: '#888' } },
+      vAxis: { textStyle: { color: '#888' }, minValue: 0 },
+      bar: { groupWidth: '60%' },
+      colors: ['#c9a84c'],
+    }}
+  />
+</div>
                       {getStatusLabel(encomenda.status)}
                     </p>
                   </div>
