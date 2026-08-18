@@ -136,3 +136,9 @@ CORS_ALLOW_HEADERS = [
 # EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 # DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', '')
+
+# Media files (upload de imagens)
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

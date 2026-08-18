@@ -1,9 +1,24 @@
 from django.db import models
 
 class Produto(models.Model):
-    codigo = models.CharField(max_length=50, unique=True, verbose_name="Código do Produto")
-    nome = models.CharField(max_length=255, verbose_name="Nome do Produto")
-    descricao = models.TextField(verbose_name="Descrição", blank=True, null=True)
+    codigo = models.CharField(max_length=50, unique=True)
+    nome = models.CharField(max_length=255)
+    descricao = models.TextField(blank=True, null=True)
+    preco_usd = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    preco_mzn = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    preco_zar = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    stock_atual = models.IntegerField(default=0)
+    stock_minimo = models.IntegerField(default=5)
+    categoria = models.CharField(max_length=100, blank=True, null=True)
+    
+    # NOVO CAMPO PARA UPLOAD DIRETO
+    imagem = models.ImageField(upload_to='produtos/', blank=True, null=True, verbose_name="Imagem do Produto")
+    
+    is_active = models.BooleanField(default=True)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nome} - {self.codigo}"
     
     # Preços nas diferentes moedas
     preco_usd = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço em USD", blank=True, null=True)
