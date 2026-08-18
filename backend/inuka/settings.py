@@ -142,3 +142,16 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Cloudinary
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name = "SEU_CLOUD_NAME",
+    api_key = "SUA_API_KEY",
+    api_secret = "SEU_API_SECRET"
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
