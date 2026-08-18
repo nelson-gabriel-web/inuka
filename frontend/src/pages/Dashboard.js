@@ -100,7 +100,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-black py-4 px-3 sm:py-8 sm:px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Header - Responsivo */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/5 pb-3 sm:pb-4 mb-4 sm:mb-6 gap-2">
           <div>
             <h1 className="text-base sm:text-lg font-medium text-white">
@@ -114,7 +114,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Saldo - 3 colunas responsivas */}
+        {/* Saldo */}
         <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mb-4 sm:mb-6">
           <div className="bg-white/5 border border-white/5 rounded-lg p-2 sm:p-3 text-center">
             <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">USD</p>
@@ -130,7 +130,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Botões de Ação - Empilhados em mobile */}
+        {/* Botões */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
           <button 
             onClick={() => setShowDeposito(!showDeposito)}
@@ -152,17 +152,12 @@ const Dashboard = () => {
           </button>
         </div>
 
-        {/* Modal Depósito - Responsivo */}
+        {/* Depósito */}
         {showDeposito && (
           <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-sm font-medium text-white">💰 Depositar</h3>
-              <button 
-                onClick={() => setShowDeposito(false)}
-                className="text-white/30 hover:text-white text-sm"
-              >
-                ✕
-              </button>
+              <button onClick={() => setShowDeposito(false)} className="text-white/30 hover:text-white text-sm">✕</button>
             </div>
             <form onSubmit={handleDeposito} className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <div>
@@ -193,36 +188,26 @@ const Dashboard = () => {
               <div className="sm:col-span-2">
                 <label className="text-[10px] sm:text-xs text-white/40 block mb-1">Valor</label>
                 <input 
-                  type="number" 
-                  step="0.01"
+                  type="number" step="0.01"
                   value={depositoData.valor}
                   onChange={(e) => setDepositoData({...depositoData, valor: e.target.value})}
                   className="w-full bg-black border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#c9a84c]/50"
-                  placeholder="0.00"
-                  required
+                  placeholder="0.00" required
                 />
               </div>
-              <button 
-                type="submit"
-                className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition"
-              >
+              <button type="submit" className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition">
                 Confirmar Depósito
               </button>
             </form>
           </div>
         )}
 
-        {/* Modal Conversão - Responsivo */}
+        {/* Conversão */}
         {showConversao && (
           <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-sm font-medium text-white">🔄 Converter</h3>
-              <button 
-                onClick={() => setShowConversao(false)}
-                className="text-white/30 hover:text-white text-sm"
-              >
-                ✕
-              </button>
+              <button onClick={() => setShowConversao(false)} className="text-white/30 hover:text-white text-sm">✕</button>
             </div>
             <form onSubmit={handleConversao} className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <div>
@@ -252,66 +237,74 @@ const Dashboard = () => {
               <div className="sm:col-span-2">
                 <label className="text-[10px] sm:text-xs text-white/40 block mb-1">Valor</label>
                 <input 
-                  type="number" 
-                  step="0.01"
+                  type="number" step="0.01"
                   value={conversaoData.valor_origem}
                   onChange={(e) => setConversaoData({...conversaoData, valor_origem: e.target.value})}
                   className="w-full bg-black border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#c9a84c]/50"
-                  placeholder="0.00"
-                  required
+                  placeholder="0.00" required
                 />
               </div>
-              <button 
-                type="submit"
-                className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition"
-              >
+              <button type="submit" className="sm:col-span-2 bg-[#c9a84c] text-black text-xs sm:text-sm py-2 rounded-full font-medium hover:bg-[#d4a017] transition">
                 Confirmar Conversão
               </button>
             </form>
           </div>
         )}
 
-        {/* Informações do Revendedor - Grid responsivo */}
+        {/* Informações do Revendedor */}
         <div className="bg-white/5 border border-white/5 rounded-lg p-3 mb-4 sm:mb-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-2 text-[10px] sm:text-xs">
-            <div className="col-span-2 sm:col-span-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 text-[10px] sm:text-xs">
+            <div>
               <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Nome</p>
-              <p className="text-white/80 text-xs sm:text-sm truncate">{revendedor?.nome_completo}</p>
+              <p className="text-white/80 text-xs sm:text-sm font-medium truncate">
+                {revendedor?.nome_completo || 'N/A'}
+              </p>
             </div>
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Email</p>
-              <p className="text-white/80 text-xs sm:text-sm truncate">{revendedor?.email}</p>
+              <p className="text-white/80 text-xs sm:text-sm truncate">
+                {revendedor?.email || 'N/A'}
+              </p>
             </div>
             <div>
               <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Telefone</p>
-              <p className="text-white/80 text-xs sm:text-sm">{revendedor?.telefone}</p>
+              <p className="text-white/80 text-xs sm:text-sm">
+                {revendedor?.telefone || 'N/A'}
+              </p>
             </div>
             <div>
-              <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Loja</p>
-              <p className="text-white/80 text-xs sm:text-sm truncate">{revendedor?.loja_recolha || 'Não definida'}</p>
+              <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Província</p>
+              <p className="text-white/80 text-xs sm:text-sm truncate">
+                {revendedor?.provincia || 'N/A'}
+              </p>
+            </div>
+            <div>
+              <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Cidade</p>
+              <p className="text-white/80 text-xs sm:text-sm truncate">
+                {revendedor?.cidade || 'N/A'}
+              </p>
+            </div>
+            <div>
+              <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Loja de Recolha</p>
+              <p className="text-white/80 text-xs sm:text-sm truncate">
+                {revendedor?.loja_recolha || 'Não definida'}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Últimos Pedidos - Responsivo */}
+        {/* Últimos Pedidos */}
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-xs sm:text-sm font-medium text-white/60">Últimos Pedidos</h2>
-            <button 
-              onClick={() => navigate('/products')}
-              className="text-[8px] sm:text-[10px] text-[#c9a84c] hover:text-[#d4a017] transition uppercase tracking-wider"
-            >
+            <button onClick={() => navigate('/products')} className="text-[8px] sm:text-[10px] text-[#c9a84c] hover:text-[#d4a017] transition uppercase tracking-wider">
               + Comprar
             </button>
           </div>
-
           {pedidos.length === 0 ? (
             <div className="bg-white/5 border border-white/5 rounded-lg p-4 sm:p-6 text-center">
               <p className="text-[10px] sm:text-xs text-white/30">Nenhum pedido realizado ainda</p>
-              <button 
-                onClick={() => navigate('/products')}
-                className="mt-3 bg-[#c9a84c] text-black text-[10px] sm:text-xs px-3 sm:px-4 py-1.5 rounded-full hover:bg-[#d4a017] transition"
-              >
+              <button onClick={() => navigate('/products')} className="mt-3 bg-[#c9a84c] text-black text-[10px] sm:text-xs px-3 sm:px-4 py-1.5 rounded-full hover:bg-[#d4a017] transition">
                 Fazer Primeiro Pedido
               </button>
             </div>
