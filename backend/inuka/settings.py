@@ -161,9 +161,9 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary Configuration
 cloudinary.config(
-    cloud_name = os.getenv('Nelson'),
-    api_key = os.getenv('939286921812253'),
-    api_secret = os.getenv('61BWv7uwyExa_0pbrjYW19EAyJo')
+    cloud_name = "Nelson",
+    api_key = "939286921812253",
+    api_secret = "61BWv7uwyExa_0pbrjYW19EAyJo"
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
