@@ -19,25 +19,24 @@ const Home = () => {
       <HeroSection />
       <Categories />
       
-      {/* Produtos em Destaque - VERSÃO PRETO E DOURADO */}
-      <section className="py-16 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-[#c9a84c]">Produtos em Destaque</h2>
-              <p className="text-white/40 mt-1">Os mais amados pelos nossos clientes</p>
-            </div>
-            <button className="text-[#c9a84c] font-medium hover:text-[#d4a017] transition border border-[#c9a84c]/30 px-4 py-2 rounded-full hover:bg-[#c9a84c]/10">
-              Ver Todos →
-            </button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {produtos.map((produto) => (
-              <ProductCard key={produto.id} product={produto} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="py-8 sm:py-16 bg-black">
+  <div className="container mx-auto px-4">
+    <div className="flex items-center justify-between mb-4 sm:mb-8">
+      <div>
+        <h2 className="text-xl sm:text-3xl font-bold text-[#c9a84c]">Produtos em Destaque</h2>
+        <p className="text-xs sm:text-sm text-white/40 mt-0.5 sm:mt-1">Os mais amados pelos nossos clientes</p>
+      </div>
+      <button className="text-[#c9a84c] text-xs sm:text-sm font-medium hover:text-[#d4a017] transition border border-[#c9a84c]/30 px-2 sm:px-4 py-1 sm:py-2 rounded-full hover:bg-[#c9a84c]/10">
+        Ver Todos →
+      </button>
+    </div>
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6">
+      {produtos.map((produto) => (
+        <ProductCard key={produto.id} product={produto} />
+      ))}
+    </div>
+  </div>
+</section>
 
       <DealSection />
     </div>
