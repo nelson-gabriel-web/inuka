@@ -7,11 +7,19 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="group bg-white/5 border border-white/5 rounded-lg overflow-hidden hover:border-[#c9a84c]/40 transition-all duration-300 hover:shadow-lg hover:shadow-[#c9a84c]/5">
-      {/* Imagem - Tamanho reduzido */}
+      {/* Imagem */}
       <div className="relative overflow-hidden bg-black/50 h-40">
-        <div className="w-full h-full flex items-center justify-center text-3xl text-[#c9a84c]/20 font-light">
-          {product.icon || '✦'}
-        </div>
+        {product.imagem_url ? (
+          <img 
+            src={product.imagem_url} 
+            alt={product.nome}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-3xl text-[#c9a84c]/20 font-light">
+            ✦
+          </div>
+        )}
         <button
           onClick={() => setIsLiked(!isLiked)}
           className="absolute top-2 right-2 p-1 bg-black/80 border border-white/10 rounded-full hover:border-[#c9a84c]/50 transition"
@@ -29,24 +37,24 @@ const ProductCard = ({ product }) => {
         )}
       </div>
 
-      {/* Informações - Tamanho reduzido */}
+      {/* Informações */}
       <div className="p-2.5">
         <div className="flex items-center justify-between mb-0.5">
           <span className="text-[9px] text-white/30 uppercase tracking-wider">
-            {product.category}
+            {product.categoria || product.category}
           </span>
           <div className="flex items-center gap-0.5">
             <span className="text-[9px] text-[#c9a84c]">★</span>
             <span className="text-[9px] text-white/50">{product.rating || 4.5}</span>
           </div>
         </div>
-        <h3 className="text-xs font-medium text-white mb-0.5 truncate">{product.nome || product.name}</h3>
+        <h3 className="text-xs font-medium text-white mb-0.5 truncate">{product.nome}</h3>
         <p className="text-[9px] text-white/20 line-clamp-1 mb-1.5">
-          {product.descricao || product.description || 'Produto INUKA'}
+          {product.descricao || 'Produto INUKA'}
         </p>
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-sm font-bold text-[#c9a84c]">R{product.preco_zar || product.price}</span>
+            <span className="text-sm font-bold text-[#c9a84c]">R{product.preco_zar}</span>
             {product.preco_usd && (
               <span className="text-[9px] text-white/20 line-through ml-1">
                 ${product.preco_usd}
