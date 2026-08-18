@@ -97,9 +97,11 @@ export const transacaoService = {
 
   // Fazer depósito
   depositar: async (dados) => {
-    const response = await api.post('/transacoes/depositar/', dados);
-    return response.data;
-  },
+  const formData = new FormData();
+  Object.keys(dados).forEach(key => formData.append(key, dados[key]));
+  const response = await api.post('/transacoes/depositar/', formData);
+  return response.data;
+},
 
   // Converter moeda
   converter: async (dados) => {

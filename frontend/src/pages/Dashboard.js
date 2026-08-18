@@ -47,19 +47,27 @@ const Dashboard = () => {
   };
 
   const handleDeposito = async (e) => {
-    e.preventDefault();
-    try {
-      await transacaoService.depositar({
-        revendedor_id: revendedor.id,
-        ...depositoData
-      });
-      toast.success('Depósito registado! Aguarde confirmação.');
-      setShowDeposito(false);
-      carregarDados();
-    } catch (error) {
-      toast.error('Erro ao fazer depósito');
-    }
-  };
+  e.preventDefault();
+  console.log('📤 Dados do depósito:', {
+    revendedor_id: revendedor.id,
+    ...depositoData
+  });
+  
+  try {
+    const data = await transacaoService.depositar({
+      revendedor_id: revendedor.id,
+      ...depositoData
+    });
+    console.log('✅ Resposta do depósito:', data);
+    toast.success('Depósito registado! Aguarde confirmação.');
+    setShowDeposito(false);
+    carregarDados();
+  } catch (error) {
+    console.error('❌ Erro no depósito:', error);
+    console.error('❌ Resposta do erro:', error.response);
+    toast.error(error.response?.data?.erro || 'Erro ao fazer depósito');
+  }
+};
 
   const handleConversao = async (e) => {
     e.preventDefault();
