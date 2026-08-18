@@ -17,12 +17,17 @@ def listar_produtos(request):
     for p in produtos:
         # Construir URL da imagem
         imagem_url = None
-        if p.imagem:
-            # Para Cloudinary
-            imagem_url = p.imagem.url if hasattr(p.imagem, 'url') else None
-            # Para media local
-            if not imagem_url and p.imagem:
-                imagem_url = request.build_absolute_uri(p.imagem.url)
+if p.imagem:
+    try:
+        imagem_url = None
+if p.imagem:
+    try:
+        imagem_url = p.imagem.url
+        # Se for uma URL relativa, adicionar o domínio
+        if imagem_url and imagem_url.startswith('/'):
+            imagem_url = f"https://inuka-6576.onrender.com{imagem_url}"
+    except:
+        imagem_url = None
         
         dados.append({
             'id': p.id,
