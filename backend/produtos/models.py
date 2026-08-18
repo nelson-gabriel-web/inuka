@@ -12,7 +12,7 @@ class Produto(models.Model):
     categoria = models.CharField(max_length=100, blank=True, null=True)
     
     # NOVO CAMPO PARA UPLOAD DIRETO
-    imagem = models.ImageField(upload_to='produtos/', blank=True, null=True, verbose_name="Imagem do Produto")
+    imagem = models.ImageField(upload_to='produtos/', blank=True, null=True)
     
     is_active = models.BooleanField(default=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
