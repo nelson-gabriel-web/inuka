@@ -1,5 +1,4 @@
 from django.db import models
-from lojas.models import Loja
 
 class Revendedor(models.Model):
     # Tipos de documento
@@ -27,13 +26,7 @@ class Revendedor(models.Model):
     bairro = models.CharField(max_length=100, verbose_name="Bairro", blank=True, null=True)
     
     # Relacionamentos
-    loja_recolha = models.ForeignKey(
-        Loja, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True,
-        verbose_name="Loja de Recolha"
-    )
+    loja_recolha = models.CharField(max_length=100, blank=True, null=True, verbose_name="Loja de Recolha")
     
     # Autenticação
     password_hash = models.CharField(max_length=255, verbose_name="Password")
