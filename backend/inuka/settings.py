@@ -5,7 +5,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-temp-key-12345'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'inuka-6576.onrender.com',
+    'inuka-frontend.onrender.com',
+    '.onrender.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
