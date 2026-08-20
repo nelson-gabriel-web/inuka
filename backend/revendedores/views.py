@@ -16,8 +16,11 @@ def gerar_codigo_unico():
     codigo = ''.join(random.choices(string.digits, k=4))
     return f"{prefixo}{codigo}"
 
-
 @csrf_exempt
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 @csrf_exempt
 def registar_revendedor(request):
     if request.method == 'GET':
@@ -25,20 +28,16 @@ def registar_revendedor(request):
     
     if request.method == 'POST':
         try:
-            if request.content_type and 'application/json' in request.content_type:
-                data = json.loads(request.body)
-            else:
-                data = request.POST
-            
-            # Campos obrigatórios (apenas os essenciais)
-            campos_obrigatorios = ['nome_completo', 'email', 'password']
-            for campo in campos_obrigatorios:
-                if campo not in data or not data[campo]:
-                    return JsonResponse({'erro': f'Campo {campo} é obrigatório'}, status=400)
-            
-            # Verificar se o email já existe
-            if Revendedor.objects.filter(email=data.get('email')).exists():
-                return JsonResponse({'erro': 'Email já registado'}, status=400)
+            data = json.loads(request.body)
+            return JsonResponse({
+                'sucesso': True,
+                'mensagem': 'Revendedor registado!',
+                'dados': data
+            })
+        except Exception as e:
+            return JsonResponse({'erro': str(e)}, status=400)
+    
+    return JsonResponse({'erro': 'Método não permitido'}, status=405)
             
             # Buscar ou criar uma loja
             loja = Loja.objects.first()
