@@ -35,11 +35,11 @@ const Register = () => {
 
   setLoading(true);
   try {
-    const response = await revendedorService.registar({
-      nome_completo: formData.nome_completo,
-      email: formData.email,
-      password: formData.password
-    });
+    const response = await axios.post('https://inuka-6576.onrender.com/api/revendedores/registar/', {
+  nome_completo: formData.nome_completo,
+  email: formData.email,
+  password: formData.password
+});
     toast.success('Registo realizado com sucesso!');
     navigate('/login');
   } catch (error) {
