@@ -13,40 +13,40 @@ const Home = () => {
 
       {/* Acesso rápido para revendedores autenticados */}
       {isAuthenticated() && (
-        <section className="py-8 bg-black border-t border-white/5">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
-              <button
-                onClick={() => navigate('/clientes')}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:border-[#c9a84c]/50 transition"
-              >
-                <div className="text-xl mb-1 text-[#c9a84c]">👤</div>
-                <span className="text-xs text-white/70">Clientes</span>
-              </button>
-              <button
-                onClick={() => navigate('/encomendas')}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:border-[#c9a84c]/50 transition"
-              >
-                <div className="text-xl mb-1 text-[#c9a84c]">📋</div>
-                <span className="text-xs text-white/70">Encomendas</span>
-              </button>
-              <button
-                onClick={() => navigate('/comissoes')}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:border-[#c9a84c]/50 transition"
-              >
-                <div className="text-xl mb-1 text-[#c9a84c]">💰</div>
-                <span className="text-xs text-white/70">Comissões</span>
-              </button>
-              <button
-                onClick={() => navigate('/products')}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:border-[#c9a84c]/50 transition"
-              >
-                <div className="text-xl mb-1 text-[#c9a84c]">📦</div>
-                <span className="text-xs text-white/70">Produtos</span>
-              </button>
-            </div>
-          </div>
-        </section>
+        <section className="py-4 bg-black border-t border-white/5">
+  <div className="container mx-auto px-4">
+    <div className="grid grid-cols-4 gap-2 max-w-xl mx-auto">
+      <button
+        onClick={() => navigate('/clientes')}
+        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
+      >
+        <div className="text-lg text-[#c9a84c]">👤</div>
+        <span className="text-[10px] text-white/70">Clientes</span>
+      </button>
+      <button
+        onClick={() => navigate('/encomendas')}
+        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
+      >
+        <div className="text-lg text-[#c9a84c]">📋</div>
+        <span className="text-[10px] text-white/70">Encomendas</span>
+      </button>
+      <button
+        onClick={() => navigate('/comissoes')}
+        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
+      >
+        <div className="text-lg text-[#c9a84c]">💰</div>
+        <span className="text-[10px] text-white/70">Comissões</span>
+      </button>
+      <button
+        onClick={() => navigate('/products')}
+        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
+      >
+        <div className="text-lg text-[#c9a84c]">📦</div>
+        <span className="text-[10px] text-white/70">Produtos</span>
+      </button>
+    </div>
+  </div>
+</section>
       )}
 
       {/* Call to action para visitantes não autenticados */}
