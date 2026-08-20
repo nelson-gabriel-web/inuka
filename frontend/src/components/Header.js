@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBagIcon, UserIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
+import { UserIcon } from '@heroicons/react/24/outline';
 
 const Header = () => {
-  const { totalItems } = useCart();
-  const { isAuthenticated, revendedor, logout } = useAuth();
+  const [revendedor, setRevendedor] = useState(null);
+
+  useEffect(() => {
+    // Verificar se há revendedor no localStorage
+    const stored = localStorage.getItem('revendedor');
+    if (stored) {
+      setRevendedor(JSON.parse(stored));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('revendedor');
+    localStorage.removeItem('token');
+    setRevendedor(null);
+    window.location.href = '/';
+  };
+
+  const isAuthenticated = revendedor !== null;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/5">
@@ -23,44 +37,40 @@ const Header = () => {
           </Link>
 
           {/* Navegação Desktop */}
-          {/* Navegação Desktop */}
-<nav className="hidden md:flex items-center space-x-8">
-  <Link to="/" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-    Home
-  </Link>
-  {revendedor ? (
-    <>
-      <Link to="/products" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-        Produtos
-      </Link>
-      <Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-        Clientes
-      </Link>
-      <Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-        Encomendas
-      </Link>
-      <Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-        Comissões
-      </Link>
-      <Link to="/dashboard" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-        Dashboard
-      </Link>
-    </>
-  ) : (
-    <>
-      <Link to="/login" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-        Entrar
-      </Link>
-      <Link to="/register" className="text-sm font-medium text-[#c9a84c] hover:text-[#d4a017] transition">
-        Registar
-      </Link>
-    </>
-  )}
-</nav>
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+              Home
+            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Clientes
+                </Link>
+                <Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Encomendas
+                </Link>
+                <Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Comissões
+                </Link>
+                <Link to="/dashboard" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Dashboard
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Entrar
+                </Link>
+                <Link to="/register" className="text-sm font-medium text-[#c9a84c] hover:text-[#d4a017] transition">
+                  Registar
+                </Link>
+              </>
+            )}
+          </nav>
 
           {/* Ações */}
           <div className="flex items-center space-x-4">
-            {isAuthenticated() ? (
+            {isAuthenticated ? (
               <div className="relative group">
                 <button className="p-2 hover:bg-white/5 rounded-full transition flex items-center gap-2 text-white/40 hover:text-white">
                   <UserIcon className="h-5 w-5" />
@@ -69,22 +79,8 @@ const Header = () => {
                   </span>
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-black border border-white/10 rounded-xl shadow-2xl py-2 hidden group-hover:block">
-                  <Link to="/dashboard" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
-                    Dashboard
-                  </Link>
-                  <hr className="border-white/5 my-1" />
-                  <Link to="/clientes" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
-                    Clientes
-                  </Link>
-                  <Link to="/encomendas" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
-                    Encomendas
-                  </Link>
-                  <Link to="/comissoes" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
-                    Comissões
-                  </Link>
-                  <hr className="border-white/5 my-1" />
                   <button 
-                    onClick={logout}
+                    onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-white/5 transition"
                   >
                     Sair
