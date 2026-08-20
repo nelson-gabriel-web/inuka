@@ -10,14 +10,14 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/5">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-2 sm:py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold tracking-tight text-[#c9a84c]">
+            <span className="text-lg sm:text-2xl font-bold tracking-tight text-[#c9a84c]">
               INUKA
             </span>
-            <span className="text-xs text-[#c9a84c] font-light hidden sm:inline tracking-widest">
+            <span className="text-[8px] sm:text-xs text-[#c9a84c] font-light hidden sm:inline tracking-widest">
               ALWAYS WITH YOU
             </span>
           </Link>
@@ -31,9 +31,20 @@ const Header = () => {
               Produtos
             </Link>
             {isAuthenticated() && (
-              <Link to="/dashboard" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                Dashboard
-              </Link>
+              <>
+                <Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Clientes
+                </Link>
+                <Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Encomendas
+                </Link>
+                <Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Comissões
+                </Link>
+                <Link to="/dashboard" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Dashboard
+                </Link>
+              </>
             )}
           </nav>
 
@@ -44,23 +55,13 @@ const Header = () => {
             </button>
             
             <Link to="/cart" className="p-2 hover:bg-white/5 rounded-full transition relative text-white/40 hover:text-white">
-  <ShoppingBagIcon className="h-5 w-5" />
-  {totalItems > 0 && (
-    <span className="absolute -top-1 -right-1 bg-[#c9a84c] text-black text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold">
-      {totalItems}
-    </span>
-  )}
-</Link>
-
-<Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-  Clientes
-</Link>
-<Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-  Encomendas
-</Link>
-<Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-  Comissões
-</Link>
+              <ShoppingBagIcon className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#c9a84c] text-black text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
 
             {isAuthenticated() ? (
               <div className="relative group">
@@ -73,6 +74,16 @@ const Header = () => {
                 <div className="absolute right-0 mt-2 w-48 bg-black border border-white/10 rounded-xl shadow-2xl py-2 hidden group-hover:block">
                   <Link to="/dashboard" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
                     Dashboard
+                  </Link>
+                  <hr className="border-white/5 my-1" />
+                  <Link to="/clientes" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
+                    Clientes
+                  </Link>
+                  <Link to="/encomendas" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
+                    Encomendas
+                  </Link>
+                  <Link to="/comissoes" className="block px-4 py-2 text-sm text-white/60 hover:text-[#c9a84c] hover:bg-white/5 transition">
+                    Comissões
                   </Link>
                   <hr className="border-white/5 my-1" />
                   <button 
