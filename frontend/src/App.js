@@ -4,7 +4,6 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -18,7 +17,7 @@ import './styles/App.css';
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>  {/* ← CartProvider DEVE envolver o Header */}
+      <CartProvider>
         <Router>
           <div className="min-h-screen bg-black">
             <Header />
@@ -34,7 +33,6 @@ function App() {
                 <Route path="/comissoes" element={<Comissoes />} />
               </Routes>
             </main>
-            <Footer />
             <Toaster position="top-right" />
           </div>
         </Router>
