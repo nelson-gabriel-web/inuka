@@ -37,9 +37,10 @@ export const AuthProvider = ({ children }) => {
 };
 
   const logout = () => {
-    revendedorService.logout();
-    setRevendedor(null);
-  };
+  localStorage.removeItem('revendedor');
+  localStorage.removeItem('token');
+  setRevendedor(null);
+};
 
   const isAuthenticated = () => {
     return revendedor !== null;

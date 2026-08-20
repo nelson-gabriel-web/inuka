@@ -23,39 +23,40 @@ const Header = () => {
           </Link>
 
           {/* Navegação Desktop */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-              Home
-            </Link>
-            {isAuthenticated() ? (
-              <>
-                <Link to="/products" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                  Produtos
-                </Link>
-                <Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                  Clientes
-                </Link>
-                <Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                  Encomendas
-                </Link>
-                <Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                  Comissões
-                </Link>
-                <Link to="/dashboard" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                  Dashboard
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-                  Entrar
-                </Link>
-                <Link to="/register" className="text-sm font-medium text-[#c9a84c] hover:text-[#d4a017] transition">
-                  Registar
-                </Link>
-              </>
-            )}
-          </nav>
+          {/* Navegação Desktop */}
+<nav className="hidden md:flex items-center space-x-8">
+  <Link to="/" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+    Home
+  </Link>
+  {revendedor ? (
+    <>
+      <Link to="/products" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+        Produtos
+      </Link>
+      <Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+        Clientes
+      </Link>
+      <Link to="/encomendas" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+        Encomendas
+      </Link>
+      <Link to="/comissoes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+        Comissões
+      </Link>
+      <Link to="/dashboard" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+        Dashboard
+      </Link>
+    </>
+  ) : (
+    <>
+      <Link to="/login" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+        Entrar
+      </Link>
+      <Link to="/register" className="text-sm font-medium text-[#c9a84c] hover:text-[#d4a017] transition">
+        Registar
+      </Link>
+    </>
+  )}
+</nav>
 
           {/* Ações */}
           <div className="flex items-center space-x-4">
