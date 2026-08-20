@@ -9,13 +9,6 @@ const Register = () => {
   const [formData, setFormData] = useState({
     nome_completo: '',
     email: '',
-    telefone: '',
-    documento_tipo: 'BI',
-    documento_numero: '',
-    data_nascimento: '',
-    provincia: '',
-    cidade: '',
-    bairro: '',
     password: '',
     password_confirm: ''
   });
@@ -35,9 +28,23 @@ const Register = () => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      toast.error('A password deve ter pelo menos 6 caracteres');
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await axios.post('https://inuka-6576.onrender.com/api/revendedores/registar/', formData);
+      const response = await axios.post('https://inuka-6576.onrender.com/api/revendedores/registar/', {
+        nome_completo: formData.nome_completo,
+        email: formData.email,
+        telefone: 'N/A',
+        documento_tipo: 'BI',
+        documento_numero: '000000000',
+        provincia: 'N/A',
+        cidade: 'N/A',
+        password: formData.password
+      });
       toast.success('Registo realizado com sucesso!');
       navigate('/login');
     } catch (error) {
@@ -48,134 +55,61 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-black py-8 px-4 flex items-center justify-center">
-      <div className="max-w-2xl w-full">
+      <div className="max-w-md w-full">
         <h2 className="text-2xl font-bold text-[#c9a84c] text-center mb-2">INUKA</h2>
         <p className="text-white/40 text-center text-sm mb-6">Criar conta</p>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Nome Completo</label>
-              <input
-                type="text"
-                name="nome_completo"
-                required
-                value={formData.nome_completo}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Email</label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Telefone</label>
-              <input
-                type="text"
-                name="telefone"
-                required
-                value={formData.telefone}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-                placeholder="+258 82 123 4567"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Tipo Documento</label>
-              <select
-                name="documento_tipo"
-                value={formData.documento_tipo}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              >
-                <option value="BI">BI</option>
-                <option value="PASSAPORTE">Passaporte</option>
-                <option value="DIRE">DIRE</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Nº Documento</label>
-              <input
-                type="text"
-                name="documento_numero"
-                required
-                value={formData.documento_numero}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Data Nascimento</label>
-              <input
-                type="date"
-                name="data_nascimento"
-                value={formData.data_nascimento}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Província</label>
-              <input
-                type="text"
-                name="provincia"
-                required
-                value={formData.provincia}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Cidade</label>
-              <input
-                type="text"
-                name="cidade"
-                required
-                value={formData.cidade}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Bairro</label>
-              <input
-                type="text"
-                name="bairro"
-                value={formData.bairro}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-white/40 block mb-1">Password</label>
-              <input
-                type="password"
-                name="password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-xs text-white/40 block mb-1">Confirmar Password</label>
-              <input
-                type="password"
-                name="password_confirm"
-                required
-                value={formData.password_confirm}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="text-xs text-white/40 block mb-1">Nome Completo *</label>
+            <input
+              type="text"
+              name="nome_completo"
+              required
+              value={formData.nome_completo}
+              onChange={handleChange}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
+              placeholder="João Silva"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs text-white/40 block mb-1">Email *</label>
+            <input
+              type="email"
+              name="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
+              placeholder="seu@email.com"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs text-white/40 block mb-1">Password *</label>
+            <input
+              type="password"
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs text-white/40 block mb-1">Confirmar Password *</label>
+            <input
+              type="password"
+              name="password_confirm"
+              required
+              value={formData.password_confirm}
+              onChange={handleChange}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
+              placeholder="••••••••"
+            />
           </div>
 
           <button
