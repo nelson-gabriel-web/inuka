@@ -15,8 +15,11 @@ class Encomenda(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='encomendas')
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_entrega = models.DateTimeField(blank=True, null=True)
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    comissao_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    # Valores em Metical (MZN)
+    valor_total_mzn = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Valor Total (MZN)")
+    comissao_total_mzn = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Comissão Total (MZN)")
+    
     status = models.CharField(max_length=20, choices=STATUS, default='pendente')
     observacao = models.TextField(blank=True, null=True)
 
@@ -24,14 +27,14 @@ class Encomenda(models.Model):
         return f"Encomenda #{self.id} - {self.cliente.nome}"
     
     def calcular_totais(self):
-        """Recalcula o valor total e comissão da encomenda"""
+        """Recalcula o valor total e comissão da encomenda em MZN"""
         total = 0
         comissao = 0
         for item in self.itens.all():
-            total += item.subtotal
-            comissao += item.comissao_item
-        self.valor_total = total
-        self.comissao_total = comissao
+            total += item.subtotal_mzn
+            comissao += item.comissao_item_mzn
+        self.valor_total_mzn = total
+        self.comissao_total_mzn = comissao
         self.save()
         return total, comissao
     
@@ -45,14 +48,16 @@ class ItemEncomenda(models.Model):
     encomenda = models.ForeignKey(Encomenda, on_delete=models.CASCADE, related_name='itens')
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.IntegerField()
-    preco_unitario = models.DecimalField(max_digits=10, decimal_places=2)
-    comissao_item = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    # Valores em Metical (MZN)
+    preco_unitario_mzn = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço Unitário (MZN)")
+    comissao_item_mzn = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Comissão Item (MZN)")
+    subtotal_mzn = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Subtotal (MZN)")
 
     def save(self, *args, **kwargs):
-        self.subtotal = self.quantidade * self.preco_unitario
-        # Calcular comissão baseada no percentual do produto
-        self.comissao_item = self.produto.calcular_comissao(self.subtotal)
+        self.subtotal_mzn = self.quantidade * self.preco_unitario_mzn
+        # Calcular comissão do item (usando a comissão do produto)
+        self.comissao_item_mzn = self.produto.comissao_mzn * self.quantidade
         super().save(*args, **kwargs)
         # Atualizar totais da encomenda
         self.encomenda.calcular_totais()

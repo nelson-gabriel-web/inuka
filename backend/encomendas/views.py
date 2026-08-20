@@ -30,15 +30,15 @@ def listar_encomendas(request, revendedor_id):
                 'id': e.id,
                 'cliente': e.cliente.nome,
                 'cliente_id': e.cliente.id,
-                'valor_total': float(e.valor_total),
-                'comissao_total': float(e.comissao_total),
+                'valor_total_mzn': float(e.valor_total_mzn),
+                'comissao_total_mzn': float(e.comissao_total_mzn),
                 'status': e.status,
                 'data_criacao': e.data_criacao,
                 'itens': [
                     {
                         'produto': item.produto.nome,
                         'quantidade': item.quantidade,
-                        'preco_unitario': float(item.preco_unitario),
+                        'preco_unitario_mzn': float(item.preco_unitario_mzn),
                         'subtotal': float(item.subtotal),
                         'comissao_item': float(item.comissao_item),
                     }
@@ -67,8 +67,8 @@ def exportar_csv(request, revendedor_id):
                 e.id,
                 e.cliente.nome,
                 e.data_criacao.strftime('%d/%m/%Y'),
-                float(e.valor_total),
-                float(e.comissao_total),
+                float(e.valor_total_mzn),
+                float(e.comissao_total_mzn),
                 e.status
             ])
         
@@ -103,7 +103,7 @@ def criar_encomenda(request):
                 encomenda=encomenda,
                 produto=produto,
                 quantidade=item_data['quantidade'],
-                preco_unitario=produto.preco_zar,
+                preco_unitario_mzn=produto.preco_zar,
             )
         
         # Recalcular totais
@@ -115,8 +115,8 @@ def criar_encomenda(request):
             'encomenda': {
                 'id': encomenda.id,
                 'cliente': encomenda.cliente.nome,
-                'valor_total': float(encomenda.valor_total),
-                'comissao_total': float(encomenda.comissao_total),
+                'valor_total_mzn': float(encomenda.valor_total_mzn),
+                'comissao_total_mzn': float(encomenda.comissao_total_mzn),
             }
         }, status=201)
     except Exception as e:
@@ -131,8 +131,8 @@ def detalhes_encomenda(request, encomenda_id):
         'id': encomenda.id,
         'cliente': encomenda.cliente.nome,
         'cliente_id': encomenda.cliente.id,
-        'valor_total': float(encomenda.valor_total),
-        'comissao_total': float(encomenda.comissao_total),
+        'valor_total_mzn': float(encomenda.valor_total_mzn),
+        'comissao_total_mzn': float(encomenda.comissao_total_mzn),
         'status': encomenda.status,
         'data_criacao': encomenda.data_criacao,
         'itens': [
@@ -140,7 +140,7 @@ def detalhes_encomenda(request, encomenda_id):
                 'produto': item.produto.nome,
                 'produto_id': item.produto.id,
                 'quantidade': item.quantidade,
-                'preco_unitario': float(item.preco_unitario),
+                'preco_unitario_mzn': float(item.preco_unitario_mzn),
                 'subtotal': float(item.subtotal),
                 'comissao_item': float(item.comissao_item),
             }
@@ -161,7 +161,7 @@ def enviar_fatura_email(request, encomenda_id):
         Segue a fatura da sua encomenda #{encomenda.id}:
         
         Data: {encomenda.data_criacao.strftime('%d/%m/%Y')}
-        Valor Total: R$ {float(encomenda.valor_total):.2f}
+        Valor Total: R$ {float(encomenda.valor_total_mzn):.2f}
         Status: {encomenda.status}
         
         Itens:
@@ -170,7 +170,7 @@ def enviar_fatura_email(request, encomenda_id):
         for item in encomenda.itens.all():
             message += f"\n- {item.produto.nome} x {item.quantidade} = R$ {float(item.subtotal):.2f}"
         
-        message += f"\n\nComissão do Revendedor: R$ {float(encomenda.comissao_total):.2f}"
+        message += f"\n\nComissão do Revendedor: R$ {float(encomenda.comissao_total_mzn):.2f}"
         message += "\n\nObrigado por escolher a INUKA!"
         
         send_mail(
@@ -205,7 +205,7 @@ def atualizar_status_encomenda(request, encomenda_id):
         # Se for pago, atualizar saldo devedor do cliente
         if novo_status == 'paga':
             cliente = encomenda.cliente
-            cliente.saldo_devedor += encomenda.valor_total
+            cliente.saldo_devedor += encomenda.valor_total_mzn
             cliente.save()
         
         return JsonResponse({
@@ -262,14 +262,14 @@ def gerar_relatorio_pdf(request, revendedor_id):
             p.drawString(30, y, str(e.id))
             p.drawString(80, y, e.cliente.nome[:30])
             p.drawString(250, y, e.data_criacao.strftime('%d/%m/%Y'))
-            p.drawString(370, y, f"R$ {float(e.valor_total):.2f}")
-            p.drawString(450, y, f"R$ {float(e.comissao_total):.2f}")
+            p.drawString(370, y, f"R$ {float(e.valor_total_mzn):.2f}")
+            p.drawString(450, y, f"R$ {float(e.comissao_total_mzn):.2f}")
             
             status_labels = {'pendente': 'Pendente', 'paga': 'Paga', 'entregue': 'Entregue', 'cancelada': 'Cancelada'}
             p.drawString(530, y, status_labels.get(e.status, e.status))
             
-            total_geral += float(e.valor_total)
-            comissao_geral += float(e.comissao_total)
+            total_geral += float(e.valor_total_mzn)
+            comissao_geral += float(e.comissao_total_mzn)
             y -= 20
         
         # Totais

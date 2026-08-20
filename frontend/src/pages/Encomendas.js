@@ -29,19 +29,16 @@ const Encomendas = () => {
   const carregarDados = async () => {
     setLoading(true);
     try {
-      // Buscar encomendas
       const encResponse = await axios.get(
         `https://inuka-6576.onrender.com/api/encomendas/revendedor/${revendedor.id}/`
       );
       setEncomendas(encResponse.data.encomendas || []);
 
-      // Buscar clientes
       const cliResponse = await axios.get(
         `https://inuka-6576.onrender.com/api/clientes/revendedor/${revendedor.id}/`
       );
       setClientes(cliResponse.data.clientes || []);
 
-      // Buscar produtos
       const prodResponse = await axios.get(
         `https://inuka-6576.onrender.com/api/produtos/`
       );
@@ -86,21 +83,6 @@ const Encomendas = () => {
     const itens = [...novaEncomenda.itens];
     itens[index][campo] = valor;
     setNovaEncomenda({ ...novaEncomenda, itens });
-    const atualizarItem = (index, campo, valor) => {
-  const itens = [...novaEncomenda.itens];
-  itens[index][campo] = valor;
-  
-  // Se for produto, atualizar preço automaticamente
-  if (campo === 'produto_id' && valor) {
-    const produto = produtos.find(p => p.id === parseInt(valor));
-    if (produto) {
-      itens[index].preco_unitario = produto.preco_zar;
-      itens[index].comissao_item = (produto.preco_zar * produto.comissao_percentual) / 100;
-    }
-  }
-  
-  setNovaEncomenda({ ...novaEncomenda, itens });
-};
   };
 
   const getStatusLabel = (status) => {
@@ -135,6 +117,25 @@ const Encomendas = () => {
     }
   };
 
+  const registarPagamento = async (encomendaId) => {
+    const valor = prompt('Valor do pagamento (MZN):');
+    if (!valor) return;
+    
+    const metodo = prompt('Método (dinheiro, transferencia, mpesa, emola, mkash):') || 'dinheiro';
+    
+    try {
+      await axios.post('https://inuka-6576.onrender.com/api/clientes/pagamento/', {
+        encomenda_id: encomendaId,
+        valor: parseFloat(valor),
+        metodo: metodo
+      });
+      toast.success('Pagamento registado com sucesso!');
+      carregarDados();
+    } catch (error) {
+      toast.error(error.response?.data?.erro || 'Erro ao registar pagamento');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black">
@@ -146,7 +147,6 @@ const Encomendas = () => {
   return (
     <div className="min-h-screen bg-black py-4 px-3 sm:py-8 sm:px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <div className="flex items-center justify-between border-b border-white/5 pb-3 sm:pb-4 mb-4 sm:mb-6">
           <div>
             <h1 className="text-base sm:text-lg font-medium text-white">Encomendas</h1>
@@ -160,7 +160,6 @@ const Encomendas = () => {
           </button>
         </div>
 
-        {/* Lista de Encomendas */}
         {encomendas.length === 0 ? (
           <div className="bg-white/5 border border-white/5 rounded-lg p-8 sm:p-12 text-center">
             <p className="text-sm text-white/30">Nenhuma encomenda criada</p>
@@ -183,7 +182,7 @@ const Encomendas = () => {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-white">R$ {parseFloat(encomenda.valor_total).toFixed(2)}</p>
+                    <p className="text-sm font-bold text-white">MZN {parseFloat(encomenda.valor_total_mzn || encomenda.valor_total || 0).toFixed(2)}</p>
                     <p className={`text-xs ${getStatusColor(encomenda.status)}`}>
                       {getStatusLabel(encomenda.status)}
                     </p>
@@ -204,12 +203,19 @@ const Encomendas = () => {
                     </button>
                   ))}
                 </div>
+                <div className="mt-2">
+                  <button
+                    onClick={() => registarPagamento(encomenda.id)}
+                    className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/30 transition"
+                  >
+                    Registrar Pagamento
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* Modal Nova Encomenda */}
         {showModal && (
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
             <div className="bg-black border border-white/10 rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">

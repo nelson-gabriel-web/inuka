@@ -20,7 +20,7 @@ def listar_clientes(request, revendedor_id):
                 'telefone': c.telefone,
                 'email': c.email,
                 'endereco': c.endereco,
-                'saldo_devedor': float(c.saldo_devedor),
+                'saldo_devedor_mzn': float(c.saldo_devedor_mzn),
                 'data_criacao': c.data_criacao,
             })
         
@@ -70,7 +70,7 @@ def detalhes_cliente(request, cliente_id):
         'telefone': cliente.telefone,
         'email': cliente.email,
         'endereco': cliente.endereco,
-        'saldo_devedor': float(cliente.saldo_devedor),
+        'saldo_devedor_mzn': float(cliente.saldo_devedor_mzn),
         'data_criacao': cliente.data_criacao,
     })
 
@@ -114,3 +114,74 @@ class ClienteViewSet(viewsets.ModelViewSet):
         if revendedor_id:
             return Cliente.objects.filter(revendedor_id=revendedor_id, is_active=True)
         return Cliente.objects.filter(is_active=True)
+
+@csrf_exempt
+def registar_pagamento(request):
+    """Regista um pagamento de um cliente"""
+    if request.method != 'POST':
+        return JsonResponse({'erro': 'Método não permitido'}, status=405)
+    
+    try:
+        if request.content_type and 'application/json' in request.content_type:
+            data = json.loads(request.body)
+        else:
+            data = request.POST
+        
+        encomenda_id = data.get('encomenda_id')
+        valor = data.get('valor')
+        metodo = data.get('metodo', 'dinheiro')
+        observacao = data.get('observacao', '')
+        
+        # Validar
+        if not encomenda_id or not valor:
+            return JsonResponse({'erro': 'Encomenda e valor são obrigatórios'}, status=400)
+        
+        try:
+            encomenda = Encomenda.objects.get(id=encomenda_id)
+            cliente = encomenda.cliente
+            valor_decimal = Decimal(valor)
+        except Encomenda.DoesNotExist:
+            return JsonResponse({'erro': 'Encomenda não encontrada'}, status=404)
+        except ValueError:
+            return JsonResponse({'erro': 'Valor inválido'}, status=400)
+        
+        # Verificar se o valor não excede o saldo devedor
+        if valor_decimal > cliente.saldo_devedor_mzn:
+            return JsonResponse({
+                'erro': f'Valor excede o saldo devedor. Saldo atual: {cliente.saldo_devedor_mzn:.2f} MZN'
+            }, status=400)
+        
+        # Criar pagamento
+        pagamento = Pagamento.objects.create(
+            cliente=cliente,
+            encomenda=encomenda,
+            valor=valor_decimal,
+            metodo=metodo,
+            observacao=observacao
+        )
+        
+        # Atualizar saldo devedor do cliente
+        cliente.saldo_devedor_mzn -= valor_decimal
+        cliente.save()
+        
+        # Atualizar status da encomenda para "paga"
+        if encomenda.status == 'pendente':
+            encomenda.status = 'paga'
+            encomenda.save()
+        
+        return JsonResponse({
+            'sucesso': True,
+            'mensagem': f'Pagamento de {valor_decimal:.2f} MZN registado com sucesso!',
+            'pagamento': {
+                'id': pagamento.id,
+                'cliente': cliente.nome,
+                'encomenda': encomenda.id,
+                'valor': float(valor_decimal),
+                'metodo': metodo,
+                'data': pagamento.data_pagamento
+            },
+            'saldo_restante': float(cliente.saldo_devedor_mzn)
+        }, status=201)
+        
+    except Exception as e:
+        return JsonResponse({'erro': f'Erro ao registar pagamento: {str(e)}'}, status=500)
