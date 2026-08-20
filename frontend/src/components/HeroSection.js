@@ -18,7 +18,10 @@ const HeroSection = () => {
               Gerencie clientes, encomendas e comissões.
             </p>
             <div className="flex flex-wrap gap-2 sm:gap-4 justify-center md:justify-start">
-              <button className="bg-[#c9a84c] text-black text-xs sm:text-base px-4 sm:px-8 py-1.5 sm:py-3 rounded-full font-medium hover:bg-[#d4a017] transition">
+              <button 
+                onClick={() => window.location.href = '/register'}
+                className="bg-[#c9a84c] text-black text-xs sm:text-base px-4 sm:px-8 py-1.5 sm:py-3 rounded-full font-medium hover:bg-[#d4a017] transition cursor-pointer"
+              >
                 Começar Agora
               </button>
             </div>

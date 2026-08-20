@@ -23,11 +23,11 @@ const Home = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <button
-                onClick={() => navigate('/login')}
-                className="bg-[#c9a84c] text-black px-6 py-2 rounded-full text-sm font-medium hover:bg-[#d4a017] transition"
-              >
-                Entrar
-              </button>
+  onClick={() => window.location.href = '/register'}
+  className="bg-[#c9a84c] text-black px-6 py-2 rounded-full text-sm font-medium hover:bg-[#d4a017] transition"
+>
+  Registar-se
+</button>
               <button
                 onClick={() => navigate('/register')}
                 className="border border-white/20 text-white/70 px-6 py-2 rounded-full text-sm font-medium hover:border-[#c9a84c]/50 transition"
