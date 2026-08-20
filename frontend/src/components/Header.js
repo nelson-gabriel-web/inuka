@@ -27,11 +27,11 @@ const Header = () => {
             <Link to="/" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
               Home
             </Link>
-            <Link to="/products" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
-              Produtos
-            </Link>
-            {isAuthenticated() && (
+            {isAuthenticated() ? (
               <>
+                <Link to="/products" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Produtos
+                </Link>
                 <Link to="/clientes" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
                   Clientes
                 </Link>
@@ -45,24 +45,20 @@ const Header = () => {
                   Dashboard
                 </Link>
               </>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm font-medium text-white/60 hover:text-[#c9a84c] transition">
+                  Entrar
+                </Link>
+                <Link to="/register" className="text-sm font-medium text-[#c9a84c] hover:text-[#d4a017] transition">
+                  Registar
+                </Link>
+              </>
             )}
           </nav>
 
           {/* Ações */}
           <div className="flex items-center space-x-4">
-            <button className="p-2 hover:bg-white/5 rounded-full transition text-white/40 hover:text-white">
-              <MagnifyingGlassIcon className="h-5 w-5" />
-            </button>
-            
-            <Link to="/cart" className="p-2 hover:bg-white/5 rounded-full transition relative text-white/40 hover:text-white">
-              <ShoppingBagIcon className="h-5 w-5" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#c9a84c] text-black text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-
             {isAuthenticated() ? (
               <div className="relative group">
                 <button className="p-2 hover:bg-white/5 rounded-full transition flex items-center gap-2 text-white/40 hover:text-white">
