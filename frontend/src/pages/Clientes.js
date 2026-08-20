@@ -125,7 +125,7 @@ const verHistorico = async (clienteId) => {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-white/40">Saldo</p>
-                  <p className="text-sm font-bold text-[#c9a84c]">R$ {parseFloat(cliente.saldo_devedor).toFixed(2)}</p>
+                  <p className="text-sm font-bold text-[#c9a84c]">MT {parseFloat(cliente.saldo_devedor_mzn || cliente.saldo_devedor || 0).toFixed(2)}</p>
                 </div>
               </div>
             ))}

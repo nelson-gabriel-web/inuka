@@ -120,7 +120,7 @@ const Dashboard = () => {
           </div>
           <div className="bg-white/5 border border-white/5 rounded-lg p-2 sm:p-3 text-center">
             <p className="text-[10px] sm:text-xs text-white/30 uppercase tracking-wider">Comissões</p>
-            <p className="text-lg sm:text-2xl font-bold text-[#c9a84c]">R$ {stats.comissoesPendentes.toFixed(2)}</p>
+            <p className="text-lg sm:text-2xl font-bold text-[#c9a84c]">MT {stats.comissoesPendentes.toFixed(2)}</p>
           </div>
         </div>
 

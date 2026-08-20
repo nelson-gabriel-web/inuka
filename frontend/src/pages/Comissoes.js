@@ -122,11 +122,11 @@ const Comissoes = () => {
         <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
           <div className="bg-white/5 border border-white/5 rounded-lg p-3 text-center">
             <p className="text-[10px] sm:text-xs text-white/30 uppercase tracking-wider">Total de Comissões</p>
-            <p className="text-xl sm:text-3xl font-bold text-[#c9a84c]">R$ {totalComissoes.toFixed(2)}</p>
+            <p className="text-xl sm:text-3xl font-bold text-[#c9a84c]">MT {totalComissoes.toFixed(2)}</p>
           </div>
           <div className="bg-white/5 border border-white/5 rounded-lg p-3 text-center">
             <p className="text-[10px] sm:text-xs text-white/30 uppercase tracking-wider">A Receber</p>
-            <p className="text-xl sm:text-3xl font-bold text-yellow-400">R$ {totalPendentes.toFixed(2)}</p>
+            <p className="text-xl sm:text-3xl font-bold text-yellow-400">MT {totalPendentes.toFixed(2)}</p>
           </div>
         </div>
 
@@ -148,7 +148,7 @@ const Comissoes = () => {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-[#c9a84c]">R$ {parseFloat(encomenda.comissao_total || 0).toFixed(2)}</p>
+                    <p className="text-sm font-bold text-[#c9a84c]">MT {parseFloat(encomenda.comissao_total || 0).toFixed(2)}</p>
                     <p className={`text-xs ${encomenda.status === 'pendente' ? 'text-yellow-400' : 'text-green-400'}`}>
                       {encomenda.status === 'pendente' ? 'A Receber' : 'Recebido'}
                     </p>

@@ -182,7 +182,7 @@ const Encomendas = () => {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-white">MZN {parseFloat(encomenda.valor_total_mzn || encomenda.valor_total || 0).toFixed(2)}</p>
+                    <p className="text-sm font-bold text-white">MT {parseFloat(encomenda.valor_total_mzn || encomenda.valor_total || 0).toFixed(2)}</p>
                     <p className={`text-xs ${getStatusColor(encomenda.status)}`}>
                       {getStatusLabel(encomenda.status)}
                     </p>

@@ -54,7 +54,7 @@ const ProductCard = ({ product }) => {
         </p>
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-sm font-bold text-[#c9a84c]">R{product.preco_zar}</span>
+            <span className="text-sm font-bold text-[#c9a84c]">MT {product.preco_mzn}</span>
             {product.preco_usd && (
               <span className="text-[9px] text-white/20 line-through ml-1">
                 ${product.preco_usd}

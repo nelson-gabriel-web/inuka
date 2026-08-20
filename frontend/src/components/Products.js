@@ -1,0 +1,1 @@
+<span className="text-sm font-bold text-[#c9a84c]">MT {product.preco_mzn}</span>
