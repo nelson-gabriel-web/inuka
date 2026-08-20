@@ -21,37 +21,33 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (formData.password !== formData.password_confirm) {
-      toast.error('As passwords não coincidem');
-      return;
-    }
+  if (formData.password !== formData.password_confirm) {
+    toast.error('As passwords não coincidem');
+    return;
+  }
 
-    if (formData.password.length < 6) {
-      toast.error('A password deve ter pelo menos 6 caracteres');
-      return;
-    }
+  if (formData.password.length < 6) {
+    toast.error('A password deve ter pelo menos 6 caracteres');
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const response = await axios.post('https://inuka-6576.onrender.com/api/revendedores/registar/', {
-        nome_completo: formData.nome_completo,
-        email: formData.email,
-        telefone: 'N/A',
-        documento_tipo: 'BI',
-        documento_numero: '000000000',
-        provincia: 'N/A',
-        cidade: 'N/A',
-        password: formData.password
-      });
-      toast.success('Registo realizado com sucesso!');
-      navigate('/login');
-    } catch (error) {
-      toast.error(error.response?.data?.erro || 'Erro ao registar');
-    }
-    setLoading(false);
-  };
+  setLoading(true);
+  try {
+    const response = await revendedorService.registar({
+      nome_completo: formData.nome_completo,
+      email: formData.email,
+      password: formData.password
+    });
+    toast.success('Registo realizado com sucesso!');
+    navigate('/login');
+  } catch (error) {
+    console.error('Erro no registo:', error);
+    toast.error(error.response?.data?.erro || 'Erro ao registar');
+  }
+  setLoading(false);
+};
 
   return (
     <div className="min-h-screen bg-black py-8 px-4 flex items-center justify-center">

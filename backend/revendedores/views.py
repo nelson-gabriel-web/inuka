@@ -18,6 +18,7 @@ def gerar_codigo_unico():
 
 
 @csrf_exempt
+@csrf_exempt
 def registar_revendedor(request):
     if request.method == 'GET':
         return JsonResponse({'mensagem': 'API de registo está funcionando!'})
@@ -29,20 +30,17 @@ def registar_revendedor(request):
             else:
                 data = request.POST
             
-            campos_obrigatorios = ['nome_completo', 'email', 'telefone', 'documento_numero', 'password']
+            # Campos obrigatórios (apenas os essenciais)
+            campos_obrigatorios = ['nome_completo', 'email', 'password']
             for campo in campos_obrigatorios:
                 if campo not in data or not data[campo]:
                     return JsonResponse({'erro': f'Campo {campo} é obrigatório'}, status=400)
             
+            # Verificar se o email já existe
             if Revendedor.objects.filter(email=data.get('email')).exists():
                 return JsonResponse({'erro': 'Email já registado'}, status=400)
             
-            if Revendedor.objects.filter(telefone=data.get('telefone')).exists():
-                return JsonResponse({'erro': 'Telefone já registado'}, status=400)
-            
-            if Revendedor.objects.filter(documento_numero=data.get('documento_numero')).exists():
-                return JsonResponse({'erro': 'Documento já registado'}, status=400)
-            
+            # Buscar ou criar uma loja
             loja = Loja.objects.first()
             if not loja:
                 loja = Loja.objects.create(
@@ -53,41 +51,24 @@ def registar_revendedor(request):
                     telefone='+258 82 123 4567'
                 )
             
+            # Gerar código único
             codigo_unico = gerar_codigo_unico()
             
+            # Criar revendedor
             revendedor = Revendedor.objects.create(
                 codigo_unico=codigo_unico,
                 nome_completo=data.get('nome_completo'),
                 email=data.get('email'),
-                telefone=data.get('telefone'),
-                documento_tipo=data.get('documento_tipo', 'BI'),
-                documento_numero=data.get('documento_numero'),
-                data_nascimento=data.get('data_nascimento') or None,
-                provincia=data.get('provincia', 'Maputo'),
-                cidade=data.get('cidade', 'Maputo'),
-                bairro=data.get('bairro', ''),
+                telefone=data.get('telefone', 'N/A'),
+                documento_tipo='BI',
+                documento_numero=data.get('documento_numero', '000000000'),
+                provincia='N/A',
+                cidade='N/A',
+                bairro='',
                 password_hash=make_password(data.get('password')),
                 loja_recolha=loja,
                 is_active=True
             )
-            
-            try:
-                send_mail(
-                    'Bem-vindo à INUKA - Seu Código Único',
-                    f'Olá {revendedor.nome_completo},\n\n'
-                    f'Bem-vindo à nossa rede de revendedores!\n\n'
-                    f'Seu Código Único: {codigo_unico}\n\n'
-                    f'Guarde este código, pois será usado para:\n'
-                    f'- Compras\n'
-                    f'- Pagamentos\n'
-                    f'- Levantamento de produtos\n\n'
-                    f'Obrigado por se juntar à INUKA!',
-                    settings.DEFAULT_FROM_EMAIL,
-                    [revendedor.email],
-                    fail_silently=True,
-                )
-            except Exception as e:
-                print(f"Erro ao enviar email: {e}")
             
             return JsonResponse({
                 'sucesso': True,
@@ -97,7 +78,6 @@ def registar_revendedor(request):
                     'id': revendedor.id,
                     'nome': revendedor.nome_completo,
                     'email': revendedor.email,
-                    'codigo_unico': revendedor.codigo_unico
                 }
             }, status=201)
             
@@ -105,7 +85,6 @@ def registar_revendedor(request):
             return JsonResponse({'erro': f'Erro ao processar: {str(e)}'}, status=500)
     
     return JsonResponse({'erro': 'Método não permitido'}, status=405)
-
 
 @csrf_exempt
 @csrf_exempt
