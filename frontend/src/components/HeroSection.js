@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="pt-14 sm:pt-20 bg-black min-h-[35vh] sm:min-h-[50vh] flex items-center">
       <div className="container mx-auto px-4 py-4 sm:py-12">
@@ -19,7 +22,7 @@ const HeroSection = () => {
             </p>
             <div className="flex flex-wrap gap-2 sm:gap-4 justify-center md:justify-start">
               <button 
-                onClick={() => window.location.href = '/register'}
+                onClick={() => navigate('/register')}
                 className="bg-[#c9a84c] text-black text-xs sm:text-base px-4 sm:px-8 py-1.5 sm:py-3 rounded-full font-medium hover:bg-[#d4a017] transition cursor-pointer"
               >
                 Começar Agora
