@@ -4,87 +4,39 @@ import { useAuth } from '../context/AuthContext';
 import HeroSection from '../components/HeroSection';
 
 const Home = () => {
-  const { isAuthenticated, revendedor } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   return (
     <div>
       <HeroSection />
 
-      {/* Acesso rápido para revendedores autenticados */}
-      {isAuthenticated() && (
-        <section className="py-4 bg-black border-t border-white/5">
-  <div className="container mx-auto px-4">
-    <div className="grid grid-cols-4 gap-2 max-w-xl mx-auto">
-      <button
-        onClick={() => navigate('/clientes')}
-        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-lg text-[#c9a84c]">👤</div>
-        <span className="text-[10px] text-white/70">Clientes</span>
-      </button>
-      <button
-        onClick={() => navigate('/encomendas')}
-        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-lg text-[#c9a84c]">📋</div>
-        <span className="text-[10px] text-white/70">Encomendas</span>
-      </button>
-      <button
-        onClick={() => navigate('/comissoes')}
-        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-lg text-[#c9a84c]">💰</div>
-        <span className="text-[10px] text-white/70">Comissões</span>
-      </button>
-      <button
-        onClick={() => navigate('/products')}
-        className="bg-white/5 border border-white/10 rounded-lg p-2 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-lg text-[#c9a84c]">📦</div>
-        <span className="text-[10px] text-white/70">Produtos</span>
-      </button>
-    </div>
-  </div>
-</section>
-      )}
-
       {/* Call to action para visitantes não autenticados */}
       {!isAuthenticated() && (
-        <section className="py-2 bg-black border-t border-white/5">
-  <div className="container mx-auto px-4">
-    <div className="grid grid-cols-4 gap-1.5 max-w-sm mx-auto">
-      <button
-        onClick={() => navigate('/clientes')}
-        className="bg-white/5 border border-white/10 rounded-lg p-1.5 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-sm text-[#c9a84c]">👤</div>
-        <span className="text-[8px] text-white/70">Clientes</span>
-      </button>
-      <button
-        onClick={() => navigate('/encomendas')}
-        className="bg-white/5 border border-white/10 rounded-lg p-1.5 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-sm text-[#c9a84c]">📋</div>
-        <span className="text-[8px] text-white/70">Encomendas</span>
-      </button>
-      <button
-        onClick={() => navigate('/comissoes')}
-        className="bg-white/5 border border-white/10 rounded-lg p-1.5 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-sm text-[#c9a84c]">💰</div>
-        <span className="text-[8px] text-white/70">Comissões</span>
-      </button>
-      <button
-        onClick={() => navigate('/products')}
-        className="bg-white/5 border border-white/10 rounded-lg p-1.5 text-center hover:border-[#c9a84c]/50 transition"
-      >
-        <div className="text-sm text-[#c9a84c]">📦</div>
-        <span className="text-[8px] text-white/70">Produtos</span>
-      </button>
-    </div>
-  </div>
-</section>
+        <section className="py-8 bg-black border-t border-white/5">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-lg sm:text-xl font-medium text-white mb-3">
+              Gerencie seu negócio com INUKA
+            </h2>
+            <p className="text-sm text-white/40 max-w-md mx-auto mb-5">
+              Organize clientes, encomendas e comissões numa só plataforma.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => navigate('/login')}
+                className="bg-[#c9a84c] text-black px-6 py-2 rounded-full text-sm font-medium hover:bg-[#d4a017] transition"
+              >
+                Entrar
+              </button>
+              <button
+                onClick={() => navigate('/register')}
+                className="border border-white/20 text-white/70 px-6 py-2 rounded-full text-sm font-medium hover:border-[#c9a84c]/50 transition"
+              >
+                Registar-se
+              </button>
+            </div>
+          </div>
+        </section>
       )}
     </div>
   );
