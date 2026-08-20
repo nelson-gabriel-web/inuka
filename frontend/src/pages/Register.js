@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { revendedorService } from '../services/api';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nome_completo: '',
     email: '',
@@ -15,11 +17,8 @@ const Register = () => {
     cidade: '',
     bairro: '',
     password: '',
-    password_confirm: '',
-    loja_recolha: 1
+    password_confirm: ''
   });
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -38,8 +37,8 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const result = await revendedorService.registar(formData);
-      toast.success('Registo realizado com sucesso! Verifique seu e-mail.');
+      const response = await axios.post('https://inuka-6576.onrender.com/api/revendedores/registar/', formData);
+      toast.success('Registo realizado com sucesso!');
       navigate('/login');
     } catch (error) {
       toast.error(error.response?.data?.erro || 'Erro ao registar');
@@ -48,174 +47,148 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold text-[#c9a84c]">
-            INUKA
-          </h2>
-          <p className="mt-1 text-center text-sm text-[#c9a84c]/60 font-light">
-            ALWAYS WITH YOU
-          </p>
-          <h3 className="mt-6 text-center text-xl font-medium text-white">
-            Criar conta
-          </h3>
-          <p className="mt-1 text-center text-sm text-white/40">
-            Torne-se um revendedor INUKA
-          </p>
-        </div>
+    <div className="min-h-screen bg-black py-8 px-4 flex items-center justify-center">
+      <div className="max-w-2xl w-full">
+        <h2 className="text-2xl font-bold text-[#c9a84c] text-center mb-2">INUKA</h2>
+        <p className="text-white/40 text-center text-sm mb-6">Criar conta</p>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-white/60">Nome Completo</label>
+              <label className="text-xs text-white/40 block mb-1">Nome Completo</label>
               <input
                 type="text"
                 name="nome_completo"
                 required
                 value={formData.nome_completo}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">E-mail</label>
+              <label className="text-xs text-white/40 block mb-1">Email</label>
               <input
                 type="email"
                 name="email"
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Telefone</label>
+              <label className="text-xs text-white/40 block mb-1">Telefone</label>
               <input
                 type="text"
                 name="telefone"
                 required
                 value={formData.telefone}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
                 placeholder="+258 82 123 4567"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Tipo de Documento</label>
+              <label className="text-xs text-white/40 block mb-1">Tipo Documento</label>
               <select
                 name="documento_tipo"
                 value={formData.documento_tipo}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               >
-                <option value="BI" className="bg-black">Bilhete de Identidade</option>
-                <option value="PASSAPORTE" className="bg-black">Passaporte</option>
-                <option value="DIRE" className="bg-black">DIRE</option>
+                <option value="BI">BI</option>
+                <option value="PASSAPORTE">Passaporte</option>
+                <option value="DIRE">DIRE</option>
               </select>
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Número do Documento</label>
+              <label className="text-xs text-white/40 block mb-1">Nº Documento</label>
               <input
                 type="text"
                 name="documento_numero"
                 required
                 value={formData.documento_numero}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Data de Nascimento</label>
+              <label className="text-xs text-white/40 block mb-1">Data Nascimento</label>
               <input
                 type="date"
                 name="data_nascimento"
                 value={formData.data_nascimento}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Província</label>
+              <label className="text-xs text-white/40 block mb-1">Província</label>
               <input
                 type="text"
                 name="provincia"
                 required
                 value={formData.provincia}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Cidade</label>
+              <label className="text-xs text-white/40 block mb-1">Cidade</label>
               <input
                 type="text"
                 name="cidade"
                 required
                 value={formData.cidade}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Bairro</label>
+              <label className="text-xs text-white/40 block mb-1">Bairro</label>
               <input
                 type="text"
                 name="bairro"
                 value={formData.bairro}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-white/60">Password</label>
+              <label className="text-xs text-white/40 block mb-1">Password</label>
               <input
                 type="password"
                 name="password"
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/60">Confirmar Password</label>
+            <div className="md:col-span-2">
+              <label className="text-xs text-white/40 block mb-1">Confirmar Password</label>
               <input
                 type="password"
                 name="password_confirm"
                 required
                 value={formData.password_confirm}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-white/10 rounded-md bg-white/5 text-white placeholder-white/30 focus:outline-none focus:ring-[#c9a84c] focus:border-[#c9a84c] sm:text-sm"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c9a84c]/50"
               />
             </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-[#c9a84c] hover:bg-[#d4a017] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c9a84c] ${
-                loading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-            >
-              {loading ? 'A processar...' : 'Registar'}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#c9a84c] text-black py-2 rounded-full font-medium hover:bg-[#d4a017] transition disabled:opacity-50"
+          >
+            {loading ? 'A processar...' : 'Registar'}
+          </button>
 
           <div className="text-center">
             <Link to="/login" className="text-sm text-[#c9a84c] hover:text-[#d4a017] transition">
-              Já tem conta? Faça login
+              Já tem conta? Entrar
             </Link>
           </div>
         </form>
