@@ -20,7 +20,7 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (formData.password !== formData.password_confirm) {
@@ -28,22 +28,27 @@ const Register = () => {
     return;
   }
 
-  if (formData.password.length < 6) {
-    toast.error('A password deve ter pelo menos 6 caracteres');
-    return;
-  }
-
   setLoading(true);
   try {
-    const response = await axios.post('https://inuka-6576.onrender.com/api/revendedores/registar/', {
-  nome_completo: formData.nome_completo,
-  email: formData.email,
-  password: formData.password
-});
+    const response = await axios.post(
+      'https://inuka-6576.onrender.com/api/revendedores/registar/',
+      {
+        nome_completo: formData.nome_completo,
+        email: formData.email,
+        password: formData.password
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    console.log('Resposta:', response.data);
     toast.success('Registo realizado com sucesso!');
     navigate('/login');
   } catch (error) {
-    console.error('Erro no registo:', error);
+    console.error('Erro completo:', error);
+    console.error('Resposta do erro:', error.response);
     toast.error(error.response?.data?.erro || 'Erro ao registar');
   }
   setLoading(false);
