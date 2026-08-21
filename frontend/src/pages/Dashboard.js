@@ -1,4 +1,3 @@
-import { Chart } from 'react-google-charts';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +27,6 @@ const Dashboard = () => {
   const carregarDados = async () => {
     setLoading(true);
     try {
-      // Buscar encomendas do revendedor
       const response = await axios.get(
         `https://inuka-6576.onrender.com/api/encomendas/revendedor/${revendedor.id}/`
       );
@@ -36,12 +34,10 @@ const Dashboard = () => {
       const encomendas = response.data.encomendas || [];
       setUltimasEncomendas(encomendas.slice(0, 5));
       
-      // Calcular estatísticas
       const total = encomendas.length;
       const pendentes = encomendas.filter(e => e.status === 'pendente').length;
-      const comissoes = encomendas.reduce((acc, e) => acc + parseFloat(e.comissao_total || 0), 0);
+      const comissoes = encomendas.reduce((acc, e) => acc + parseFloat(e.comissao_total_mzn || e.comissao_total || 0), 0);
       
-      // Buscar clientes
       const clientesResponse = await axios.get(
         `https://inuka-6576.onrender.com/api/clientes/revendedor/${revendedor.id}/`
       );
@@ -90,21 +86,15 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-black py-4 px-3 sm:py-8 sm:px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/5 pb-3 sm:pb-4 mb-4 sm:mb-6 gap-2">
-          <div>
-            <h1 className="text-base sm:text-lg font-medium text-white">
-              Olá, <span className="text-[#c9a84c]">{revendedor?.nome_completo?.split(' ')[0]}</span>
-            </h1>
-            <p className="text-[10px] sm:text-xs text-white/30">Dashboard do Revendedor</p>
-          </div>
-          <div className="text-left sm:text-right w-full sm:w-auto">
-            <p className="text-[8px] sm:text-[10px] text-white/30 uppercase tracking-wider">Código Único</p>
-            <p className="text-[10px] sm:text-xs font-mono text-[#c9a84c] break-all">{revendedor?.codigo_unico}</p>
-          </div>
+        {/* Header com nome do revendedor */}
+        <div className="border-b border-white/5 pb-3 sm:pb-4 mb-4 sm:mb-6">
+          <h1 className="text-base sm:text-lg font-medium text-white">
+            Olá, <span className="text-[#c9a84c]">{revendedor?.nome_completo?.split(' ')[0]}</span>
+          </h1>
+          <p className="text-[10px] sm:text-xs text-white/30">Dashboard</p>
         </div>
 
-        {/* Estatísticas - 4 cards */}
+        {/* Estatísticas */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
           <div className="bg-white/5 border border-white/5 rounded-lg p-2 sm:p-3 text-center">
             <p className="text-[10px] sm:text-xs text-white/30 uppercase tracking-wider">Clientes</p>
@@ -130,25 +120,25 @@ const Dashboard = () => {
             onClick={() => navigate('/clientes')}
             className="bg-[#c9a84c] text-black text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:bg-[#d4a017] transition shadow-lg shadow-[#c9a84c]/20"
           >
-            👥 Clientes
+            Clientes
           </button>
           <button 
             onClick={() => navigate('/encomendas')}
             className="border border-[#c9a84c]/50 text-[#c9a84c] text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:bg-[#c9a84c]/10 transition"
           >
-            📦 Encomendas
+            Encomendas
           </button>
           <button 
             onClick={() => navigate('/produtos')}
             className="bg-white/5 border border-white/10 text-white/70 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:border-[#c9a84c]/50 transition"
           >
-            🏷️ Produtos
+            Produtos
           </button>
           <button 
             onClick={() => navigate('/comissoes')}
             className="bg-white/5 border border-white/10 text-white/70 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full font-medium hover:border-[#c9a84c]/50 transition"
           >
-            💰 Comissões
+            Comissões
           </button>
         </div>
 
@@ -187,48 +177,8 @@ const Dashboard = () => {
                     </p>
                   </div>
                   <div className="text-right flex-shrink-0 ml-2">
-                    <p className="text-xs sm:text-sm font-bold text-white">R$ {parseFloat(encomenda.valor_total).toFixed(2)}</p>
+                    <p className="text-xs sm:text-sm font-bold text-white">MT {parseFloat(encomenda.valor_total_mzn || encomenda.valor_total || 0).toFixed(2)}</p>
                     <p className={`text-[8px] sm:text-[10px] ${getStatusColor(encomenda.status)}`}>
-
-<div className="bg-white/5 border border-white/5 rounded-lg p-4 mb-4">
-  <h3 className="text-xs font-medium text-white/60 mb-3">Encomendas por Mês</h3>
-  <Chart
-    width={'100%'}
-    height={'150px'}
-    chartType="BarChart"
-    loader={<div className="text-white/30 text-center py-4">A carregar gráfico...</div>}
-    data={[
-      ['Mês', 'Encomendas'],
-      ['Jan', 0],
-      ['Fev', 0],
-      ['Mar', 0],
-      ['Abr', 0],
-      ['Mai', 0],
-      ['Jun', 0],
-      ['Jul', 0],
-      ['Ago', 5],
-      ['Set', 0],
-      ['Out', 0],
-      ['Nov', 0],
-      ['Dez', 0],
-    ]}
-    options={{
-      backgroundColor: 'transparent',
-      legend: { position: 'none' },
-      hAxis: { textStyle: { color: '#888' } },
-      vAxis: { textStyle: { color: '#888' }, minValue: 0 },
-      bar: { groupWidth: '60%' },
-      colors: ['#c9a84c'],
-    }}
-  />
-</div>
-
-<button 
-  onClick={() => window.open(`https://inuka-6576.onrender.com/api/encomendas/exportar-csv/${revendedor.id}/`)}
-  className="border border-white/10 text-white/70 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium hover:border-[#c9a84c]/50 transition"
->
-  📊 Exportar CSV
-</button>
                       {getStatusLabel(encomenda.status)}
                     </p>
                   </div>
@@ -243,9 +193,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-<button 
-  onClick={() => window.open(`https://inuka-6576.onrender.com/api/encomendas/relatorio/${revendedor.id}/`)}
-  className="bg-[#c9a84c] text-black text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium hover:bg-[#d4a017] transition"
->
-  📄 Exportar Relatório
-</button>
