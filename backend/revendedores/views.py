@@ -22,6 +22,11 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 @csrf_exempt
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
 def registar_revendedor(request):
     if request.method == 'GET':
         return JsonResponse({'mensagem': 'API de registo está funcionando!'})
@@ -32,6 +37,21 @@ def registar_revendedor(request):
             return JsonResponse({
                 'sucesso': True,
                 'mensagem': 'Revendedor registado!',
+                'dados': data
+            })
+        except Exception as e:
+            return JsonResponse({'erro': str(e)}, status=400)
+    
+    return JsonResponse({'erro': 'Método não permitido'}, status=405)
+
+@csrf_exempt
+def login_revendedor(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            return JsonResponse({
+                'sucesso': True,
+                'mensagem': 'Login bem-sucedido!',
                 'dados': data
             })
         except Exception as e:
